@@ -53,7 +53,7 @@ function tick() {
       showResetBtn();
       displayMessage("Game ended");
     }
-  }, 125);
+  }, 100);
 }
 
 export function resetBoard() {
