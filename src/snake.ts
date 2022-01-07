@@ -10,10 +10,12 @@ const UpdatedCoords = {
   W: { x: -1, y: 0 },
 };
 
-const snake: Array<[number, number]> = [];
+let snake: Array<[number, number]> = [];
 
 let currDirection: Direction = "E";
 let nextDirection: Direction = currDirection;
+
+export let endGame = false;
 
 function getNewCoords(prevX: number, prevY: number): [number, number] {
   const { x, y } = UpdatedCoords[currDirection];
@@ -29,7 +31,6 @@ function removeSnakePixel([x, y]: [x: number, y: number]) {
 
 function setNextSnakeCoords() {
   let prevCoord;
-
   for (let i = 0; i < snake.length; i++) {
     removeSnakePixel(snake[i]);
     const nextPixel: [number, number] =
@@ -40,8 +41,7 @@ function setNextSnakeCoords() {
       snake.push([0, 0]);
       handleAppleHit();
     } else if (i === 0 && virtualGrid[nextPixel[1]][nextPixel[0]].isSnake) {
-      console.log("we hit ourselves");
-      throw "end of game";
+      endGame = true;
     }
 
     prevCoord = snake[i];
@@ -79,7 +79,7 @@ function setNextDirection(key: string) {
 export function initSnake() {
   const startingY = CELLCOUNT / 2;
   const startingX = ROWS / 2;
-
+  snake = [];
   snake.push(
     [startingX, startingY],
     [startingX, startingY + 1],
@@ -95,6 +95,8 @@ export function moveSnake() {
   }
   setNextSnakeCoords();
   drawSnake();
+
+  if (endGame) throw "";
 }
 
 document.addEventListener("keydown", (e) => setNextDirection(e.key));

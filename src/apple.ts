@@ -1,5 +1,5 @@
 import { CELLCOUNT, ROWS, virtualGrid } from "./main";
-import { Pixel, XY } from "./types";
+import { XY } from "./types";
 import { randomIntFromInterval } from "./util";
 
 export let appleCoords: XY | undefined;
@@ -56,9 +56,13 @@ export function handleAppleHit() {
   markApple();
 }
 
-export function initApple() {
+export function appleTicker() {
   if (appleCoords !== undefined) return;
 
   changeApplePos();
   markApple();
+}
+
+export function initApple() {
+  appleCoords = undefined;
 }

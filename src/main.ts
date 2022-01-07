@@ -1,4 +1,4 @@
-import { initApple } from "./apple";
+import { appleTicker, initApple } from "./apple";
 import { initSnake, moveSnake } from "./snake";
 import { Pixel, VirtualGrid } from "./types";
 import { displayMessage } from "./util";
@@ -8,11 +8,12 @@ import "./style.css";
 export const ROWS = 32;
 export const CELLCOUNT = 32;
 
-export const virtualGrid: VirtualGrid = [];
-
 let moveTimer: number | undefined;
 
+export let virtualGrid: VirtualGrid;
+
 function createGrid() {
+  virtualGrid = [];
   const grid = document.querySelector(".grid");
 
   for (let i = 0; i < ROWS; i++) {
@@ -35,22 +36,45 @@ function createGrid() {
   }
 }
 
+function showResetBtn() {
+  const resetBtn = document.querySelector(".reset-btn");
+
+  if (resetBtn) {
+    (resetBtn as any).style["visibility"] = "visible";
+  }
+}
 function tick() {
   moveTimer = setInterval(() => {
     try {
       moveSnake();
-      initApple();
+      appleTicker();
     } catch (e) {
-      console.log({ e });
       clearInterval(moveTimer);
+      showResetBtn();
       displayMessage("Game ended");
     }
   }, 125);
 }
 
+export function resetBoard() {
+  const grid = document.querySelector(".grid");
+
+  while (grid?.firstChild) {
+    grid.removeChild(grid.firstChild);
+  }
+}
+
+const resetBtn = document.querySelector(".reset-btn");
+
+resetBtn?.addEventListener("click", () => {
+  resetBoard();
+  main();
+});
+
 function main() {
   createGrid();
   initSnake();
+  initApple();
   tick();
 }
 

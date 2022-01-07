@@ -52,3 +52,6 @@ html {
 .apple {
   background-color: red;
 }
+.reset-btn {
+  visibility: hidden;
+}
