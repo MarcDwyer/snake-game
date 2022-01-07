@@ -39,6 +39,9 @@ function setNextSnakeCoords() {
       // hit apple
       snake.push([0, 0]);
       handleAppleHit();
+    } else if (i === 0 && virtualGrid[nextPixel[1]][nextPixel[0]].isSnake) {
+      console.log("we hit ourselves");
+      throw "end of game";
     }
 
     prevCoord = snake[i];
